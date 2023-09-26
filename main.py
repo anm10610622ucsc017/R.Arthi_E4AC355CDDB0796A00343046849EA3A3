@@ -1,28 +1,32 @@
-class Bank_Account:
+class Student:
 
-  def __init__(self):
-    self.balance = 0
-    print("Welcome to the Deposit & Withdrawal")
-
-  def deposit(self):
-    amount = float(input("Enter amount to be Deposited: "))
-    self.balance += amount
-    print("\n Amount Deposited:", amount)
-
-  def withdraw(self):
-    amount = float(input("Enter amount to be Withdrawn: "))
-    if self.balance >= amount:
-      self.balance -= amount
-      print("\n You Withdrew:", amount)
-    else:
-      print("\n Insufficient balance  ")
-
-  def display(self):
-    print("\n Net Available Balance=", self.balance)
+  def __init__(self, name, roll_number, cgpa):
+    self.name = name
+    self.roll_number = roll_number
+    self.cgpa = cgpa
 
 
-s = Bank_Account()
+def sort_students(student_list):
+  # Sort the student list in descending order of CGPA
+  sorted_students = sorted(student_list,
+                           key=lambda student: student.cgpa,
+                           reverse=True)
+  return sorted_students
 
-s.deposit()
-s.withdraw()
-s.display()
+
+# Example usage:
+if __name__ == "__main__":
+  students = [
+      Student("Arthi", "001", 3.8),
+      Student("abi", "002", 3.5),
+      Student("arun", "003", 3.9),
+      Student("divya", "004", 3.7)
+  ]
+
+  sorted_students = sort_students(students)
+
+  # Print sorted students
+  for student in sorted_students:
+    print(
+        f"Name: {student.name}, Roll Number: {student.roll_number}, CGPA: {student.cgpa}"
+    )
