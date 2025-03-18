@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+        }
+        form {
+            text-align: center;
+            margin-top: 20px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            width: 250px;
+            margin-right: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .weather-info {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .error {
+            color: red;
+            font-size: 18px;
+        }
+        .weather-details {
+            background-color: white;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .weather-details img {
+            width: 100px;
+        }
+        .weather-details h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .weather-details p {
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Weather Dashboard</h1>
+
+    <form id="weatherForm">
+        <input type="text" id="cityInput" placeholder="Enter city name" required>
+        <button type="submit">Search</button>
+    </form>
+
+    <div class="weather-info">
+        <div id="weatherResult"></div>
+    </div>
+
+    <script>
+        document.getElementById('weatherForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            let city = document.getElementById('cityInput').value;
+
+            fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=YOUR_API_KEY&units=metric`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.cod === 200) {
+                        const weatherHTML = `
+                            <div class="weather-details">
+                                <h2>City: ${data.name}</h2>
+                                <img src="http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" alt="Weather icon">
+                                <p>Temperature: ${data.main.temp}°C</p>
+                                <p>Humidity: ${data.main.humidity}%</p>
+                                <p>Condition: ${data.weather[0].description}</p>
+                            </div>
+                        `;
+                        document.getElementById('weatherResult').innerHTML = weatherHTML;
+                    } else {
+                        document.getElementById('weatherResult').innerHTML = `<p class="error">City not found. Please try again.</p>`;
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('weatherResult').innerHTML = `<p class="error">Error fetching data. Please try again later.</p>`;
+                });
+        });
+    </script>
+
+</body>
+</html>
